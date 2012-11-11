@@ -20,7 +20,7 @@ party <- function(data, p) {
 }
 
 statebias <- function(stateabb, partymedian=FALSE) {
-  statenum <- agg[rownames(states)==stateabb,]$id
+  statenum <- states[rownames(states)==stateabb,]$id
   tot <- subset(house, state==statenum)
 
   # Base plot
@@ -72,3 +72,4 @@ statebias <- function(stateabb, partymedian=FALSE) {
   
 }
 
+statebias("MA")
