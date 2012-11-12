@@ -24,7 +24,10 @@ statebias <- function(stateabb, partymedian=FALSE) {
   tot <- subset(house, state==statenum)
 
   # Base plot
-  plot(-10,0,xlim=c(1,111), ylim=c(-1.1, 1.1), frame.plot=F, xlab="Congress", ylab="DW-NOMINATE dim1", main=agg[rownames(agg)==stateabb,]$name)
+  par(xaxt="n")
+  plot(-10,0,xlim=c(1,113), ylim=c(-1.1, 1.1), frame.plot=F, xlab="Congress", ylab="DW-NOMINATE dim1", main=agg[rownames(agg)==stateabb,]$name)
+  par(xaxt="s")
+  axis(1, at=seq(0,110,10))
   
   # Shade background in proportion to degree of conservative (red) or liberal (blue) tendency
   for (i in seq(1,nrow(pres),1)) {
@@ -34,6 +37,18 @@ statebias <- function(stateabb, partymedian=FALSE) {
       rect(pres[i,]$cong,-1,pres[i+1,]$cong,1,border=NA, col=hsv(1,pres[i,]$dwnom1/3,1))
     } 
   }
+
+  # Label administrations
+  pcongs <- c()
+  pnames <- c()
+  for (i in seq(2,nrow(pres),1)) {
+    if (pres[i,]$name!=pres[i-1,]$name) {
+      pcongs <- append(congs, pres[i,]$cong)
+      pnames <- append(names, pres[i,]$name)
+    } 
+  }
+  text(congs+.5, y=-.99, adj=0, srt=90, labels=names, cex=0.5)
+  
   
   # Plot all individual House, Senate, and presidential points
   points(jitter(party(DWcommon,"D")$cong, factor=3), party(DWcommon,"D")$dwnom1, col=colors()[402], cex=0.1)
@@ -72,4 +87,13 @@ statebias <- function(stateabb, partymedian=FALSE) {
   
 }
 
-statebias("MA")
+
+# Print state jpegs
+stateprinter <- function(stateabb, w, h) {
+  jpeg(sprintf("/Users/alanj/Documents/DWNominate/DWN-%s.jpg", stateabb), width=w, height=h, units="px", quality=100)
+  statebias(stateabb)
+  dev.off()
+}
+
+#lapply(rownames(states), stateprinter)
+
