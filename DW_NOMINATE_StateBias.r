@@ -47,7 +47,7 @@ statebias <- function(stateabb, partymedian=FALSE) {
       pnames <- append(names, pres[i,]$name)
     } 
   }
-  text(congs+.5, y=-.99, adj=0, srt=90, labels=names, cex=0.5)
+  text(congs+.4, y=-.99, adj=0, srt=90, labels=names, cex=0.7)
   
   
   # Plot all individual House, Senate, and presidential points
